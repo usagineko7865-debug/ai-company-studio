@@ -1,5 +1,7 @@
 # AI Company Studio — Phase 1
 
+Languages: [日本語](docs/README.ja.md) · [English](docs/README.en.md) · [简体中文](docs/README.zh-CN.md) · [Português (Brasil)](docs/README.pt-BR.md) · [Español](docs/README.es.md)
+
 **あなたが社長になり、ChatGPT役とClaude役のAI役員と事業を育てるローカルWebアプリです。**
 
 普通のマルチAIチャットではなく、会話を事業案として保存し、将来は商品制作・需要検証・販売準備・成功した会社テンプレートの複製までつなげることを目指しています。
@@ -24,6 +26,8 @@
 依存パッケージは不要です。Python 3だけで動作します。
 
 > 現在は需要検証中のPhase 1です。売上や成果を保証するサービスではありません。公開・販売・購入を自動実行しません。
+
+無料版はGitHubで需要を検証し、有料版の定期課金と売上管理はStripeを使う計画です。決済ページはまだ公開していません。設計は [STRIPE_PLAN.md](STRIPE_PLAN.md) にまとめています。
 
 開発計画は [PHASES.md](PHASES.md) を参照してください。
 

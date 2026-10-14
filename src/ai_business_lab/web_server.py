@@ -18,6 +18,31 @@ from .config import ROOT, load_config
 from .prompts import CEO_SYSTEM, CTO_SYSTEM
 
 WEB_ROOT = ROOT / "web"
+LANGUAGE_NAMES = {
+    "ja": "Japanese",
+    "en": "English",
+    "zh-CN": "Simplified Chinese",
+    "pt-BR": "Brazilian Portuguese",
+    "es": "Spanish",
+}
+LOCALIZED_MOCK = {
+    "en": (
+        "Let's narrow this into one small offer, define the customer, and test demand before building too much.",
+        "I agree with a small test. Next, write one clear promise, a price hypothesis, and a measurable success condition.",
+    ),
+    "zh-CN": (
+        "先把想法缩小成一个简单的产品，明确目标客户，并在投入开发前验证需求。",
+        "我赞成先做小规模测试。下一步请确定核心承诺、价格假设和可衡量的成功标准。",
+    ),
+    "pt-BR": (
+        "Vamos transformar a ideia em uma oferta simples, definir o cliente e validar a demanda antes de construir demais.",
+        "Concordo com um teste pequeno. Agora defina uma promessa clara, uma hipótese de preço e um critério mensurável de sucesso.",
+    ),
+    "es": (
+        "Convirtamos la idea en una oferta sencilla, definamos al cliente y validemos la demanda antes de construir demasiado.",
+        "Estoy de acuerdo con una prueba pequeña. Define una promesa clara, una hipótesis de precio y un criterio medible de éxito.",
+    ),
+}
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -70,6 +95,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def _chat(self, body):
         message = str(body.get("message", "")).strip()[:20_000]; real = bool(body.get("real"))
+        lang = str(body.get("lang", "ja")); reply_language = LANGUAGE_NAMES.get(lang, "Japanese")
         if not message: return self._json({"error": "message required"}, 400)
         cfg, company = load_config(), load_state()
         if real and (cfg.use_mock_env or not cfg.openai_key or not cfg.anthropic_key):
@@ -81,11 +107,17 @@ class Handler(BaseHTTPRequestHandler):
         self.send_response(200); self.send_header("Content-Type", "application/x-ndjson; charset=utf-8")
         self.send_header("Cache-Control", "no-store"); self.end_headers()
         try:
+            if not real and lang in LOCALIZED_MOCK:
+                gpt_text, claude_text = LOCALIZED_MOCK[lang]
+                self._event({"type": "gpt", "text": gpt_text})
+                self._event({"type": "claude", "text": claude_text, "estimated_jpy": 0})
+                return
             limit = min(cfg.max_output_tokens, 500); gpt, claude = clients
-            prompt = f"会社目的: {company.mission}\n顧客: {company.customer}\n\n社長の発言:\n{message}"
+            language_rule = f"Reply only in {reply_language}."
+            prompt = f"{language_rule}\n会社目的: {company.mission}\n顧客: {company.customer}\n\n社長の発言:\n{message}"
             budget.check_before_call("openai", CEO_SYSTEM + prompt, limit); a = gpt.chat(CEO_SYSTEM, prompt, limit)
             budget.record("openai", a.input_tokens, a.output_tokens); self._event({"type": "gpt", "text": a.text})
-            cp = prompt + f"\n\n[{company.gpt_name}]\n{a.text}\n\n批判的に検証し、具体的な次の行動を提案してください。"
+            cp = prompt + f"\n\n[{company.gpt_name}]\n{a.text}\n\n{language_rule} 批判的に検証し、具体的な次の行動を提案してください。"
             budget.check_before_call("anthropic", CTO_SYSTEM + cp, limit); b = claude.chat(CTO_SYSTEM, cp, limit)
             budget.record("anthropic", b.input_tokens, b.output_tokens)
             self._event({"type": "claude", "text": b.text, "estimated_jpy": budget.summary()["estimated_total_jpy"]})
