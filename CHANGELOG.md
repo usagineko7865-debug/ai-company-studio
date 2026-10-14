@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.1 — Validation Loop
+
+- アプリ内に改善要望と有料ベータ参加希望の導線を追加
+- 起動・役員会・保存回数を端末内だけで集計
+- 有料ベータ希望専用のGitHubフォームを追加
+- 販売開始と一般販売の判定基準を文書化
+
 ## 0.1.0 — Phase 1 Preview
 
 - 人間・ChatGPT役CEO・Claude役CTOの3者役員会

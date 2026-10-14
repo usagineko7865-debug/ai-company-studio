@@ -10,3 +10,8 @@ Object.assign(window.I18N.en,{you:'You',freshTitle:'New board meeting',freshText
 Object.assign(window.I18N['zh-CN'],{you:'你',freshTitle:'新董事会',freshText:'请分享你的下一个商业想法。',companySaved:'公司信息已保存'});
 Object.assign(window.I18N['pt-BR'],{you:'Você',freshTitle:'Nova reunião',freshText:'Compartilhe sua próxima ideia de negócio.',companySaved:'Informações da empresa salvas'});
 Object.assign(window.I18N.es,{you:'Tú',freshTitle:'Nueva reunión',freshText:'Comparte tu próxima idea de negocio.',companySaved:'Información de la empresa guardada'});
+Object.assign(window.I18N.ja,{feedback:'改善点を送る ↗',betaInterest:'有料ベータに興味あり ↗',latestRelease:'最新版',previewLabel:'無料プレビューに参加中',localMetrics:'この端末：起動{launches}回・役員会{meetings}回・保存{saved}件'});
+Object.assign(window.I18N.en,{feedback:'Send feedback ↗',betaInterest:'Interested in paid beta ↗',latestRelease:'Latest release',previewLabel:'Free preview participant',localMetrics:'This device: {launches} launches · {meetings} meetings · {saved} saved'});
+Object.assign(window.I18N['zh-CN'],{feedback:'发送反馈 ↗',betaInterest:'对付费测试版感兴趣 ↗',latestRelease:'最新版本',previewLabel:'正在参加免费预览',localMetrics:'本设备：启动{launches}次・会议{meetings}次・保存{saved}项'});
+Object.assign(window.I18N['pt-BR'],{feedback:'Enviar feedback ↗',betaInterest:'Interesse no beta pago ↗',latestRelease:'Versão mais recente',previewLabel:'Participante da prévia gratuita',localMetrics:'Neste dispositivo: {launches} aberturas · {meetings} reuniões · {saved} salvos'});
+Object.assign(window.I18N.es,{feedback:'Enviar comentarios ↗',betaInterest:'Interés en la beta de pago ↗',latestRelease:'Última versión',previewLabel:'Participando en la vista previa gratuita',localMetrics:'En este dispositivo: {launches} aperturas · {meetings} reuniones · {saved} guardados'});

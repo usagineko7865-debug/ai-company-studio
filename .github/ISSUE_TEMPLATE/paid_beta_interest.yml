@@ -1,0 +1,44 @@
+name: Paid beta interest
+description: 有料ベータ版への参加希望を伝える
+title: "[Beta interest] "
+labels: ["beta-interest"]
+body:
+  - type: markdown
+    attributes:
+      value: "この回答は公開されます。氏名、メールアドレス、APIキー、事業上の秘密は書かないでください。これは参加希望の確認であり、申込みや課金ではありません。"
+  - type: dropdown
+    id: price
+    attributes:
+      label: 検討できる月額
+      options:
+        - 980円
+        - 2,980円
+        - 機能を見て判断したい
+        - 無料版のみ希望
+    validations:
+      required: true
+  - type: textarea
+    id: use-case
+    attributes:
+      label: どんな事業で使いたいですか？
+      description: 公開して問題のない範囲で書いてください。
+    validations:
+      required: true
+  - type: checkboxes
+    id: features
+    attributes:
+      label: 特に欲しい機能
+      options:
+        - label: AI役員による企画・検証
+        - label: 商品ファイルの作成
+        - label: 販売ページ・SNS案の作成
+        - label: 売上・経費・利益の管理
+        - label: 成功した事業手順の複製
+        - label: チーム利用
+  - type: checkboxes
+    id: consent
+    attributes:
+      label: 確認
+      options:
+        - label: これは参加希望の確認で、まだ課金されないことを理解しました
+          required: true

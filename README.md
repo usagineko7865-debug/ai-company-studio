@@ -37,6 +37,8 @@
 - 日本語・英語・簡体字中国語・ポルトガル語・スペイン語
 - スマホ対応、ライト／ダーク表示
 - APIキーと会社データはPC内に保存
+- アプリ内から改善要望・有料ベータ参加希望を送信
+- 起動回数・役員会回数・保存数を端末内だけで確認
 
 ## 3分で試す
 
@@ -77,6 +79,7 @@
 
 - 開発計画: [PHASES.md](PHASES.md)
 - Stripe設計案: [STRIPE_PLAN.md](STRIPE_PLAN.md)
+- 販売開始の判定表: [VALIDATION.md](VALIDATION.md)
 - セキュリティ報告: [SECURITY.md](SECURITY.md)
 - 開発への参加: [CONTRIBUTING.md](CONTRIBUTING.md)
 
