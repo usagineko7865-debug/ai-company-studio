@@ -12,6 +12,7 @@
       <nav>
         <button class="nav active" data-view="chat" data-i18n="board">◉　AI役員会</button>
         <button class="nav" data-view="projects" data-i18n="projects">▣　事業案</button>
+        <button class="nav" data-view="template" data-i18n="templateNav">◇　会社テンプレート</button>
         <button class="nav" data-view="company" data-i18n="company">◇　会社設定</button>
       </nav>
       <div class="sidebar-bottom">
@@ -45,6 +46,19 @@
       </section>
 
       <section class="view" id="projectsView"><div class="content-head"><h2 data-i18n="projectsTitle">事業案</h2><p data-i18n="projectsText">役員会から保存したアイデアを管理します。</p></div><div class="project-grid" id="projectGrid"></div></section>
+
+      <section class="view" id="templateView"><div class="content-head"><span class="eyebrow">REPRODUCIBLE COMPANY / 01</span><h2 data-i18n="templateTitle">会社テンプレート</h2><p data-i18n="templateText">成功した事業を、他の人が実行できる会社の設計図にします。</p></div>
+        <div class="template-status"><b data-i18n="templateDraft">非公開ドラフト</b><span data-i18n="templateSafety">書き出すまでPCの外へ送信されません</span></div>
+        <form class="template-form" id="templateForm">
+          <label><span data-i18n="templateName">テンプレート名</span><input id="templateTitle" maxlength="120"></label>
+          <label><span data-i18n="valueProposition">誰の、どんな問題を解決する会社か</span><textarea id="valueProposition" maxlength="2000"></textarea></label>
+          <label><span data-i18n="provenOutcome">実際に得られた結果</span><textarea id="provenOutcome" maxlength="4000"></textarea></label>
+          <label><span data-i18n="evidence">結果を確認できる証拠</span><textarea id="evidence" maxlength="8000"></textarea></label>
+          <label><span data-i18n="repeatableSteps">他の人が再現する手順</span><textarea id="repeatableSteps" maxlength="12000"></textarea></label>
+          <label><span data-i18n="failureConditions">うまくいかない条件・注意点</span><textarea id="failureConditions" maxlength="4000"></textarea></label>
+          <div class="template-actions"><button type="submit" data-i18n="saveDraft">下書きを保存</button><button type="button" id="exportTemplate" data-i18n="exportTemplate">JSONで書き出す</button><label class="import-button"><span data-i18n="importTemplate">読み込む</span><input id="templateFile" type="file" accept="application/json,.json"></label></div>
+        </form>
+      </section>
 
       <section class="view" id="companyView"><div class="content-head"><h2 data-i18n="companyTitle">会社設定</h2><p data-i18n="companyText">AI役員が判断するための会社情報です。</p></div>
         <form class="settings-card" id="companyForm">

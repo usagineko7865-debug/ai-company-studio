@@ -13,11 +13,12 @@ from urllib.parse import urlparse
 
 from .budget import BudgetTracker
 from .clients import AnthropicClient, MockClient, OpenAIClient
-from .company import Project, load_state, save_state
-from .config import ROOT, load_config
+from .company import (Project, backup_state, export_company_template,
+                      import_company_template, load_state, save_state)
+from .config import BUNDLE_ROOT, load_config
 from .prompts import CEO_SYSTEM, CTO_SYSTEM
 
-WEB_ROOT = ROOT / "web"
+WEB_ROOT = BUNDLE_ROOT / "web"
 LANGUAGE_NAMES = {
     "ja": "Japanese",
     "en": "English",
@@ -66,6 +67,11 @@ class Handler(BaseHTTPRequestHandler):
             cfg, state = load_config(), load_state()
             return self._json({"company": asdict(state), "api_budget": cfg.max_budget_jpy,
                                "keys_ready": bool(cfg.openai_key and cfg.anthropic_key and not cfg.use_mock_env)})
+        if path == "/api/template/export":
+            raw = json.dumps(export_company_template(load_state()), ensure_ascii=False, indent=2).encode("utf-8")
+            self.send_response(200); self.send_header("Content-Type", "application/json; charset=utf-8")
+            self.send_header("Content-Disposition", 'attachment; filename="ai-company-template.json"')
+            self.send_header("Content-Length", str(len(raw))); self.end_headers(); self.wfile.write(raw); return
         rel = "index.html" if path == "/" else path.lstrip("/")
         target = (WEB_ROOT / rel).resolve()
         if WEB_ROOT.resolve() not in target.parents and target != WEB_ROOT.resolve():
@@ -87,6 +93,18 @@ class Handler(BaseHTTPRequestHandler):
         if path == "/api/project":
             state = load_state(); state.projects.append(Project(str(body.get("title", "名称未定"))[:80], str(body.get("summary", ""))[:30_000]))
             save_state(state); return self._json([asdict(p) for p in state.projects])
+        if path == "/api/template":
+            state = load_state()
+            for key, limit in (("template_title", 120), ("value_proposition", 2_000),
+                               ("proven_outcome", 4_000), ("evidence", 8_000),
+                               ("repeatable_steps", 12_000), ("failure_conditions", 4_000)):
+                setattr(state, key, str(body.get(key, ""))[:limit])
+            save_state(state); return self._json(asdict(state))
+        if path == "/api/template/import":
+            state = load_state()
+            try: imported = import_company_template(body, state)
+            except (ValueError, TypeError) as exc: return self._json({"error": str(exc)}, 400)
+            backup_state(); save_state(imported); return self._json(asdict(imported))
         if path == "/api/chat": return self._chat(body)
         return self._json({"error": "not found"}, 404)
 

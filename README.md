@@ -45,6 +45,8 @@
 - OpenAI / Anthropicを使う実AIモード
 - API利用前の予算ガード
 - 会話から事業案を保存
+- 成功条件・証拠・再現手順・失敗条件を会社テンプレートとして保存
+- 会社テンプレートを安全なJSONで書き出し／読み込み
 - 会社の目的・顧客・運営予算を管理
 - 日本語・英語・簡体字中国語・ポルトガル語・スペイン語
 - スマホ対応、ライト／ダーク表示
@@ -54,18 +56,13 @@
 
 ## 3分で試す
 
-### 必要なもの
-
-- Windows 10 / 11
-- Python 3.11以上
-
 ### 起動方法
 
-1. [最新版のZIP](https://github.com/usagineko7865-debug/ai-company-studio/releases/latest)をダウンロードして展開
-2. `AI会議を開く.bat` をダブルクリック
+1. [最新版](https://github.com/usagineko7865-debug/ai-company-studio/releases/latest)から `AI-Company-Studio-Windows-...zip` をダウンロードして展開
+2. `AI-Company-Studio.exe` をダブルクリック
 3. ブラウザで `http://127.0.0.1:8765` が開く
 
-無料練習モードはAPIキー不要です。追加パッケージのインストールも不要です。
+Windows 10 / 11に対応し、PythonやAPIキーの用意は不要です。現在はコード署名前のため、Windowsが「未確認の発行元」と表示する場合があります。ソースから起動したい開発者は [BUILD.md](BUILD.md) を参照してください。
 
 ## 実AIを使う場合
 
@@ -91,6 +88,7 @@
 
 - 開発計画: [PHASES.md](PHASES.md)
 - Stripe設計案: [STRIPE_PLAN.md](STRIPE_PLAN.md)
+- 会社テンプレートの仕様: [docs/COMPANY_TEMPLATE.md](docs/COMPANY_TEMPLATE.md)
 - 販売開始の判定表: [VALIDATION.md](VALIDATION.md)
 - セキュリティ報告: [SECURITY.md](SECURITY.md)
 - 開発への参加: [CONTRIBUTING.md](CONTRIBUTING.md)

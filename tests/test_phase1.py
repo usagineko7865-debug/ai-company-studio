@@ -6,6 +6,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from ai_business_lab import meeting, prompts
 from ai_business_lab.clients import ApiError, MockClient
 from ai_business_lab.config import Config
+from ai_business_lab.company import CompanyState, export_company_template, import_company_template
 
 CFG = Config(True, "", "", "m1", "m2", 150, 155, 0.15, 0.6, 1.0, 5.0, 900)
 LOG = logging.getLogger("test"); LOG.addHandler(logging.NullHandler())
@@ -84,6 +85,24 @@ class Phase1Tests(unittest.TestCase):
         self.assertEqual(res.status, "completed")
         self.assertEqual(len(res.turns), 6)
         self.assertLessEqual(b.summary()["estimated_total_jpy"], 50)
+
+    def test_company_template_round_trip(self):
+        state = CompanyState(company_name="Example", template_title="Repeatable Shop",
+                             proven_outcome="3 sales", repeatable_steps="1. Validate\n2. Sell")
+        payload = export_company_template(state)
+        restored = import_company_template(payload, CompanyState())
+        self.assertEqual(restored.company_name, "Example")
+        self.assertEqual(restored.template_title, "Repeatable Shop")
+        self.assertEqual(restored.proven_outcome, "3 sales")
+
+    def test_template_rejects_unknown_schema(self):
+        with self.assertRaises(ValueError):
+            import_company_template({"schema": "unknown", "schema_version": 1}, CompanyState())
+
+    def test_template_export_contains_no_api_keys(self):
+        raw = json.dumps(export_company_template(CompanyState()))
+        self.assertNotIn("API_KEY", raw)
+        self.assertNotIn("OPENAI", raw.upper())
 
 
 if __name__ == "__main__":
