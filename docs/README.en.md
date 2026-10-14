@@ -1,6 +1,6 @@
 # AI Company Studio
 
-A local web app where you, a ChatGPT-based CEO, and a Claude-based CTO develop a business in a group-chat style workspace.
+A local web app where you, a ChatGPT-based CEO, and a Claude-based CTO build a business together. Its defining goal is to turn a proven operating method into a reproducible “company template” that its creator can sell to others. Phase 1 provides the business-building and evidence foundation for that marketplace.
 
 - Switch between a free mock mode and real AI
 - Save conversations as business ideas

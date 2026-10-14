@@ -1,6 +1,6 @@
 # AI Company Studio
 
-Um aplicativo web local no qual você, um CEO baseado no ChatGPT e um CTO baseado no Claude desenvolvem negócios como em um chat em grupo.
+Um aplicativo web local no qual você, um CEO baseado no ChatGPT e um CTO baseado no Claude criam um negócio. O diferencial é transformar um método comprovado em um “modelo de empresa” reproduzível que o criador possa vender a outras pessoas. A Fase 1 cria a base de desenvolvimento e registro.
 
 - Alternância entre modo simulado gratuito e IA real
 - Conversas salvas como ideias de negócio
