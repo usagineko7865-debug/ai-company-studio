@@ -1,90 +1,100 @@
-# AI Company Studio — Phase 1
+# AI Company Studio
 
-Languages: [日本語](docs/README.ja.md) · [English](docs/README.en.md) · [简体中文](docs/README.zh-CN.md) · [Português (Brasil)](docs/README.pt-BR.md) · [Español](docs/README.es.md)
+<p align="center">
+  <img src="docs/assets/hero.jpg" alt="AI Company Studio — human founder meeting with two AI executives" width="100%">
+</p>
 
-**あなたが社長になり、ChatGPT役とClaude役のAI役員と事業を育てるローカルWebアプリです。**
+<p align="center"><strong>あなたが社長。ChatGPT役とClaude役が、事業を前へ進めるAI役員。</strong></p>
 
-普通のマルチAIチャットではなく、会話を事業案として保存し、将来は商品制作・需要検証・販売準備・成功した会社テンプレートの複製までつなげることを目指しています。
+<p align="center">
+  <a href="https://github.com/usagineko7865-debug/ai-company-studio/releases/latest">最新版をダウンロード</a> ·
+  <a href="#3分で試す">3分で試す</a> ·
+  <a href="PHASES.md">開発ロードマップ</a> ·
+  <a href="https://github.com/usagineko7865-debug/ai-company-studio/issues">要望・不具合</a>
+</p>
+
+日本語 · [English](docs/README.en.md) · [简体中文](docs/README.zh-CN.md) · [Português (Brasil)](docs/README.pt-BR.md) · [Español](docs/README.es.md)
+
+## これは何？
+
+普通の「複数AIを並べただけのチャット」ではありません。あなた・チャッピーCEO・Claude CTOが同じ役員会に参加し、アイデアを検討して事業案として残す、ローカル動作の事業開発ツールです。
+
+| 一般的なAIチャット | AI Company Studio |
+|---|---|
+| 質問に回答して終わる | CEOが提案し、CTOが弱点と実行方法を検証 |
+| 会話が流れていく | 会話を事業案として保存 |
+| 1つのAI視点 | 役割の異なるAI役員会 |
+| API料金が分かりにくい | 呼び出し前に予算ガード |
 
 ## 現在できること
 
-- ChatGPT風のレスポンシブなWeb UI
-- あなた・チャッピーCEO・Claude CTOの3人役員会
-- 無料モックと実AIの安全な切替
-- OpenAI / Anthropic APIの予算ガード
+- あなた・チャッピーCEO・Claude CTOのグループ会話
+- 料金のかからない無料練習モード
+- OpenAI / Anthropicを使う実AIモード
+- API利用前の予算ガード
 - 会話から事業案を保存
-- 会社名・目的・顧客・運営予算の管理
-- ダーク／ライト表示
-- APIキーと会社データをPC内だけに保存
+- 会社の目的・顧客・運営予算を管理
+- 日本語・英語・簡体字中国語・ポルトガル語・スペイン語
+- スマホ対応、ライト／ダーク表示
+- APIキーと会社データはPC内に保存
 
-## 30秒で起動
+## 3分で試す
 
-1. `.env.example` を `.env` にコピー（無料練習だけならキー不要）
-2. Windowsで `AI会議を開く.bat` をダブルクリック
+### 必要なもの
+
+- Windows 10 / 11
+- Python 3.11以上
+
+### 起動方法
+
+1. [最新版のZIP](https://github.com/usagineko7865-debug/ai-company-studio/releases/latest)をダウンロードして展開
+2. `AI会議を開く.bat` をダブルクリック
 3. ブラウザで `http://127.0.0.1:8765` が開く
 
-依存パッケージは不要です。Python 3だけで動作します。
+無料練習モードはAPIキー不要です。追加パッケージのインストールも不要です。
 
-> 現在は需要検証中のPhase 1です。売上や成果を保証するサービスではありません。公開・販売・購入を自動実行しません。
+## 実AIを使う場合
 
-無料版はGitHubで需要を検証し、有料版の定期課金と売上管理はStripeを使う計画です。決済ページはまだ公開していません。設計は [STRIPE_PLAN.md](STRIPE_PLAN.md) にまとめています。
+1. `.env.example` を複製して `.env` に変更
+2. `.env` にOpenAIとAnthropicのAPIキーを自分で入力
+3. `USE_MOCK=false` に変更
+4. 画面右上の「実AI」をONにする
 
-開発計画は [PHASES.md](PHASES.md) を参照してください。
-
----
-
-## 旧コマンド版について
-
-OpenAI(CEO役)と Claude(CTO役)が最大3往復で議論し、事業案を Markdown と JSON に保存します。
-**初期状態はモックモード(APIを一切使わない・無料)です。**
-
-## フォルダ構成
-```
-AI-Business-Lab/
-├─ src/ai_business_lab/   プログラム本体(config / clients / budget / meeting / prompts / mock_data)
-├─ tests/test_phase1.py   自動テスト
-├─ outputs/               会議記録(.md)と最終提案(.json)の保存先
-├─ logs/                  実行ごとのログ
-├─ run_mock.bat           モックで実行(ダブルクリック)
-├─ run_real.bat           実APIで実行(確認あり)
-├─ .env.example           設定ひな形(.env にコピーして使う)
-└─ .gitignore             .env / logs / outputs を GitHub に上げない設定
-```
-
-## 使い方(モック)
-いちばん簡単な方法は、`AI会議を開く.bat` をダブルクリックして Phase 1 の会社画面を使うことです。会社情報、AI役員会、事業案、見た目の設定をタブで切り替えられます。
-
-1. `run_mock.bat` をダブルクリック。
-2. `outputs` フォルダの `meeting_日時.md`(会議)と `proposal_日時.json`(最終提案)を開く。
-3. 画面と記録には「MOCK」と明示されます。モックの内容は市場調査ではなく動作確認用のサンプルです。
-
-テスト実行: `py tests/test_phase1.py`
-
-## 実APIを使う(料金が発生します)
-実APIは **次の3つがすべて揃った時だけ** 動きます。
-1. `.env.example` を `.env` にコピーし、`USE_MOCK=false` にする
-2. `OPENAI_API_KEY` と `ANTHROPIC_API_KEY` を `.env` に書く(`.env` は絶対に共有・GitHub公開しない)
-3. `run_real.bat` から実行(`--real` 付き)
-
-### 先にやること:API側の利用上限(必須)
-プログラム内の予算停止は**推定値**で、厳密な課金上限ではありません。必ず各社の管理画面で上限を設定してください。
-- OpenAI: Platform の Billing → Limits で月間の Usage limit を設定(前払いクレジット方式なら、チャージ額=最大支出になります)
-- Anthropic: Console の Plan & Billing / Limits で月間の Spend limit を設定
-- 合計が月3,000円に収まるよう、両社とも少額(例: 各1,000円程度)に。
-- モデルと料金(2026-10-14 に公式で確認、`.env.example` に反映済み):
-  - OpenAI `gpt-6-luna`: 入力 $0.10 / 出力 $0.50(100万トークンあたり)
-  - Anthropic `claude-haiku-5-5`: 入力 $0.10 / 出力 $0.50(プロンプト10万トークン以下の場合)
-  - 料金は変わることがあります。実行前に各社の公式 Pricing ページで再確認し、`.env` の `*_USD_PER_M` を更新してください。
-  - 初回テストの予算上限は `MAX_BUDGET_JPY=50`(50円)です。
+> `.env` はGitHubやチャットに共有しないでください。実AIへの送信前には確認画面が表示され、少額のAPI料金が発生します。
 
 ## 安全設計
-- 会議は最大3往復(固定)+ CEOによる最終取りまとめ1回
-- 呼び出し前に「最悪ケースの料金」を計算し、1回の上限(`MAX_BUDGET_JPY`)を超えるなら停止
-- エラー・予算超過時は安全停止し、それまでの記録を保存。自動リトライはしない
-- メール送信・公開・課金操作などの外部アクションは実装していません(通信先は公式APIのみ)
 
-## 保存場所について
-このプロジェクトは `C:\AI-Business-Lab`(OneDrive の外)にあります。`.env` に書いたAPIキーがクラウドに同期されません。
+- 初期状態は無料練習モード
+- サーバーはPC内の `127.0.0.1` だけで待受
+- `.env`、会話ログ、会社データはGit管理対象外
+- 呼び出し前に最大料金を推定し、設定予算を超える場合は停止
+- 公開・販売・購入・メール送信を自動実行しない
+- エラー時の自動リトライなし
 
-## Python 3.14 について
-外部パッケージを使わない(標準ライブラリのみ)ため、3.14で互換性問題は起きない設計です。
+## 現在の位置づけ
+
+これは需要検証中の **Phase 1 Preview** です。売上や成果を保証するものではありません。無料版への反応を確認しながら改善し、有料版の定期課金・売上管理にはStripeを使う予定です。決済はまだ開始していません。
+
+- 開発計画: [PHASES.md](PHASES.md)
+- Stripe設計案: [STRIPE_PLAN.md](STRIPE_PLAN.md)
+- セキュリティ報告: [SECURITY.md](SECURITY.md)
+- 開発への参加: [CONTRIBUTING.md](CONTRIBUTING.md)
+
+## 開発者向け
+
+```powershell
+$env:PYTHONPATH="src"
+py -m ai_business_lab.web_server
+```
+
+テスト:
+
+```powershell
+py tests/test_phase1.py
+```
+
+外部Pythonパッケージを使わず、標準ライブラリだけで動作します。
+
+## ライセンス
+
+現在は需要検証中のため、ライセンスをまだ確定していません。ソースコードの著作権は作者に留保されます。閲覧と個人での試用はできますが、再配布・商用利用の条件は正式ライセンス決定後に明示します。

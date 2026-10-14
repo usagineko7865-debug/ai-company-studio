@@ -1,0 +1,37 @@
+name: Bug report
+description: 動かなかった点を報告する
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: "APIキー、.env、個人情報、非公開の会話内容は書かないでください。"
+  - type: textarea
+    id: problem
+    attributes:
+      label: 起きたこと
+      description: 期待した結果と実際の結果を書いてください。
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 再現手順
+      placeholder: "1. アプリを開く\n2. …"
+    validations:
+      required: true
+  - type: dropdown
+    id: mode
+    attributes:
+      label: 利用モード
+      options:
+        - 無料練習
+        - 実AI
+        - 不明
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: 環境
+      placeholder: "例: Windows 11 / Python 3.14"

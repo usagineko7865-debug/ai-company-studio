@@ -1,0 +1,21 @@
+name: Feature request
+description: 改善案や欲しい機能を提案する
+title: "[Idea] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: situation
+    attributes:
+      label: どんな場面で困っていますか？
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: どんな機能が欲しいですか？
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: その機能で何が良くなりますか？
