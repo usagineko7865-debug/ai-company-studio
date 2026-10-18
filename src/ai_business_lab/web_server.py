@@ -26,6 +26,11 @@ LANGUAGE_NAMES = {
     "pt-BR": "Brazilian Portuguese",
     "es": "Spanish",
 }
+
+
+def is_public_demo() -> bool:
+    """Public hosting must never expose shared state or paid API keys."""
+    return os.environ.get("PUBLIC_DEMO", "false").strip().lower() == "true"
 LOCALIZED_MOCK = {
     "en": (
         "Let's narrow this into one small offer, define the customer, and test demand before building too much.",
@@ -63,10 +68,13 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         path = urlparse(self.path).path
+        if path == "/health":
+            return self._json({"status": "ok", "public_demo": is_public_demo()})
         if path == "/api/bootstrap":
             cfg, state = load_config(), load_state()
             return self._json({"company": asdict(state), "api_budget": cfg.max_budget_jpy,
-                               "keys_ready": bool(cfg.openai_key and cfg.anthropic_key and not cfg.use_mock_env)})
+                               "keys_ready": bool(not is_public_demo() and cfg.openai_key and cfg.anthropic_key and not cfg.use_mock_env),
+                               "public_demo": is_public_demo()})
         if path == "/api/template/export":
             raw = json.dumps(export_company_template(load_state()), ensure_ascii=False, indent=2).encode("utf-8")
             self.send_response(200); self.send_header("Content-Type", "application/json; charset=utf-8")
@@ -85,6 +93,8 @@ class Handler(BaseHTTPRequestHandler):
         try: body = self._body()
         except Exception: return self._json({"error": "invalid request"}, 400)
         path = urlparse(self.path).path
+        if is_public_demo() and path in {"/api/company", "/api/project", "/api/template", "/api/template/import"}:
+            return self._json({"error": "公開デモでは保存できません。PC版をダウンロードしてお試しください。"}, 403)
         if path == "/api/company":
             state = load_state(); state.company_name = str(body.get("company_name", ""))[:80] or state.company_name
             state.mission = str(body.get("mission", ""))[:500]; state.customer = str(body.get("customer", ""))[:500]
@@ -115,6 +125,8 @@ class Handler(BaseHTTPRequestHandler):
         message = str(body.get("message", "")).strip()[:20_000]; real = bool(body.get("real"))
         lang = str(body.get("lang", "ja")); reply_language = LANGUAGE_NAMES.get(lang, "Japanese")
         if not message: return self._json({"error": "message required"}, 400)
+        if is_public_demo() and real:
+            return self._json({"error": "公開デモは無料練習モード専用です。実AIはPC版で利用してください。"}, 403)
         cfg, company = load_config(), load_state()
         if real and (cfg.use_mock_env or not cfg.openai_key or not cfg.anthropic_key):
             return self._json({"error": ".env のAPIキーと USE_MOCK=false を確認してください。"}, 400)
@@ -144,8 +156,11 @@ class Handler(BaseHTTPRequestHandler):
 
 
 def main():
-    server = ThreadingHTTPServer(("127.0.0.1", 8765), Handler)
-    threading.Timer(0.7, lambda: webbrowser.open("http://127.0.0.1:8765")).start()
+    host = os.environ.get("HOST", "127.0.0.1")
+    port = int(os.environ.get("PORT", "8765"))
+    server = ThreadingHTTPServer((host, port), Handler)
+    if host in {"127.0.0.1", "localhost"}:
+        threading.Timer(0.7, lambda: webbrowser.open(f"http://127.0.0.1:{port}")).start()
     try: server.serve_forever()
     except KeyboardInterrupt: pass
     finally: server.server_close()

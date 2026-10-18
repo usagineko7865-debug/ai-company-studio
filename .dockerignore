@@ -1,0 +1,15 @@
+.git
+.env
+.venv
+.build-venv
+build
+dist
+__pycache__
+*.pyc
+*.spec
+logs/*
+outputs/*
+data/*
+!logs/.gitkeep
+!outputs/.gitkeep
+!data/.gitkeep

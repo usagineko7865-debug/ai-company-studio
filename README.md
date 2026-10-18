@@ -106,6 +106,8 @@ py -m ai_business_lab.web_server
 py tests/test_phase1.py
 ```
 
+Railwayへ無料練習モード専用の公開デモを配備する場合は、[DEPLOY_RAILWAY.md](DEPLOY_RAILWAY.md)を参照してください。公開デモではAPIキーと共有データを扱いません。
+
 外部Pythonパッケージを使わず、標準ライブラリだけで動作します。
 
 ## ライセンス
